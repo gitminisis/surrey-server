@@ -1,0 +1,11 @@
+Server listening on port \\.\pipe\5859bbd3-b211-41c0-96bb-49937db96074
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json

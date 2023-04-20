@@ -1,0 +1,24 @@
+[Error: ENOENT: no such file or directory, open 'F:\wwwroot\src\templates\json\favicon.ico.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'F:\\wwwroot\\src\\templates\\json\\favicon.ico.json'
+}
+[Error: ENOENT: no such file or directory, open 'F:\wwwroot\src\templates\json\favicon.ico.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'F:\\wwwroot\\src\\templates\\json\\favicon.ico.json'
+}
+[Error: ENOENT: no such file or directory, open 'F:\wwwroot\src\templates\json\favicon.ico.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'F:\\wwwroot\\src\\templates\\json\\favicon.ico.json'
+}
+[Error: ENOENT: no such file or directory, open 'F:\wwwroot\src\templates\json\favicon.ico.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'F:\\wwwroot\\src\\templates\\json\\favicon.ico.json'
+}

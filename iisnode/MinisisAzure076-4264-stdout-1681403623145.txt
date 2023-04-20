@@ -1,0 +1,39 @@
+Server listening on port \\.\pipe\6cc4c0fe-9587-4569-a3f0-ef02c41d8da3
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+favicon.ico
+../wwwroot/src/templates/json/favicon.ico.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+{
+  heading: 'City of Surrey Online Heritage Search Test',
+  description: 'More than 100,000 archival photos, maps, documents, and oral histories, as well as over 5,000 artifacts are at your fingertips. Browse the categories, neighbourhoods, or new additions below, or search for specific records using the keyword search.'
+}
+Data has been written to file successfully.
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+{
+  heading: 'City of Surrey Online Heritage Search',
+  description: 'More than 100,000 archival photos, maps, documents, and oral histories, as well as over 5,000 artifacts are at your fingertips. Browse the categories, neighbourhoods, or new additions below, or search for specific records using the keyword search.'
+}
+Data has been written to file successfully.
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+favicon.ico
+../wwwroot/src/templates/json/favicon.ico.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
+homeSimpleSearchBanner
+../wwwroot/src/templates/json/homeSimpleSearchBanner.json
