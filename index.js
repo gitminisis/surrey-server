@@ -14,14 +14,14 @@ app.use("/pages", pagesRouter);
 app.use("/summary", summaryRouter);
 
 const baseDir = process.env.BASE_DIR;
-const path = "wwwroot/src/templates/json";
+const path = process.env.BASE_PATH;
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
-app.post("/:id", (req, res) => {
+app.post("/page/:id", (req, res) => {
     let data = req.body;
-    let fileName = req.params.id;
-    const filePath = `${baseDir}${path}/${fileName}.json`;
+    let page = req.params.id;
+    const filePath = `${baseDir}${path}/${page}/index.json`;
     console.log(data);
     fs.writeFile(filePath, JSON.stringify(data), (err) => {
         if (err) {
@@ -32,11 +32,9 @@ app.post("/:id", (req, res) => {
     res.send("update successful");
 });
 
-app.get("/:id", (req, res) => {
-    let fileName = req.params.id;
-    console.log(fileName);
-    const filePath = `${baseDir}${path}/${fileName}.json`;
-    console.log(filePath);
+app.get("/page/:id", (req, res) => {
+    let page = req.params.id;
+    const filePath = `${baseDir}${path}/${page}/index.json`;
     if (!filePath) {
         res.status(400).send("Path parameter is missing");
         return;
@@ -51,7 +49,6 @@ app.get("/:id", (req, res) => {
         res.send(JSON.parse(data));
     });
 });
-
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
