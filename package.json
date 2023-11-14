@@ -9,10 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.7",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@rjsf/chakra-ui": "^5.14.1",
+    "@rjsf/core": "^5.14.1",
+    "@rjsf/utils": "^5.14.1",
+    "@rjsf/validator-ajv8": "^5.14.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "framer-motion": "^5",
     "fs": "0.0.1-security",
+    "lucide-react": "^0.292.0",
     "next": "14.0.2",
+    "next-themes": "^0.2.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwind-merge": "^2.0.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^20",
