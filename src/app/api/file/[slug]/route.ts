@@ -38,7 +38,9 @@ export async function POST(
       `${BASE_DIRECTORY}/json/${fileName}.json`,
       content as string
     );
-    return NextResponse.json({ content: data.get("data") });
+    return NextResponse.json({
+      message: "Data has been updated successfully.",
+    });
   } catch (error) {
     return NextResponse.error();
   }
