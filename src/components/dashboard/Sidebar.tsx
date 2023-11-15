@@ -7,8 +7,10 @@ import {
   FlexProps,
   Icon,
   useColorModeValue,
+  Link,
 } from "@chakra-ui/react";
 import { IconType } from "react-icons";
+import NextLink from "next/link";
 
 import {
   FiHome,
@@ -20,6 +22,7 @@ import {
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  href: string;
 }
 interface NavItemProps extends FlexProps {
   icon: IconType;
@@ -31,11 +34,24 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  { name: "Home", icon: FiHome, href: "/dashboard" },
+  {
+    name: "Union page",
+    icon: FiTrendingUp,
+    href: "/dashboard/component/union-home",
+  },
+  {
+    name: "Archive page",
+    icon: FiCompass,
+    href: "/dashboard/component/archive-home",
+  },
+  {
+    name: "Artifact page",
+    icon: FiStar,
+    href: "/dashboard/component/artifact-home",
+  },
+  { name: "FAQ", icon: FiStar, href: "/faq" },
+  // { name: "Settings", icon: FiSettings },
 ];
 export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
@@ -57,7 +73,9 @@ export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       </Flex>
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon}>
-          {link.name}
+          <Link as={NextLink} href={link.href}>
+            {link.name}
+          </Link>
         </NavItem>
       ))}
     </Box>

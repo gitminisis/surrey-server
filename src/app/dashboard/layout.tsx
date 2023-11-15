@@ -125,7 +125,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   );
 };
 
-const SidebarWithHeader = () => {
+const DashboardLayout = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -150,11 +150,11 @@ const SidebarWithHeader = () => {
         {/* mobilenav */}
         <MobileNav onOpen={onOpen} />
         <Box ml={{ base: 0, md: 60 }} p="4">
-          {/* Content */}
+          {children}
         </Box>
       </Box>
     </ChakraProvider>
   );
 };
 
-export default SidebarWithHeader;
+export default DashboardLayout;
