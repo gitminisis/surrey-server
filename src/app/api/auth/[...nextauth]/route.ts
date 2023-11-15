@@ -16,8 +16,6 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
-      console.log({ session, token });
-
       return session;
     },
   },
@@ -35,16 +33,12 @@ export const authOptions = {
         const res = await fetch(url);
         const content = await res.text();
         if (!res.ok || !content) return null;
-        console.log({ content, url });
-        console.log({ credentials });
         // If no error and we have content data, return it
         if (res.ok && content) {
           // return content;
           const userCount =
             parse(content).querySelector("#user-count")?.innerText;
-          console.log({ userCount });
           if (userCount && parseInt(userCount) === 1) {
-            console.log("pass");
             return {
               username: credentials.username,
             };

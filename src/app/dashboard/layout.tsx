@@ -7,7 +7,9 @@ import { getCurrentUser } from "@/lib/session";
 const Layout = async ({ children }: { children: ReactNode }) => {
   const user = await getCurrentUser();
   console.log(user);
-
+  if (!user) {
+    redirect("/login");
+  }
   return <DashboardLayout>{children}</DashboardLayout>;
 };
 
