@@ -15,6 +15,7 @@ import { FiHome, FiArchive } from "react-icons/fi";
 import { TbHomeSearch, TbListDetails } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import { FaQuestionCircle } from "react-icons/fa";
+import { TfiAnnouncement } from "react-icons/tfi";
 interface LinkItemProps {
   name: string;
   icon: IconType;
@@ -53,6 +54,11 @@ const LinkItems: Array<LinkItemProps> = [
     href: "/dashboard/component/detail-page",
   },
   { name: "FAQ", icon: FaQuestionCircle, href: "/dashboard/component/faq" },
+  {
+    name: "Announcement",
+    icon: TfiAnnouncement,
+    href: "/dashboard/component/announcement",
+  },
   // { name: "Settings", icon: FiSettings },
 ];
 export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {

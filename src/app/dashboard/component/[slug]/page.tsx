@@ -1,8 +1,7 @@
 "use client";
-
 import React from "react";
-import Form from "@rjsf/chakra-ui";
-import validator from "@rjsf/validator-ajv8";
+
+import ComponentForm from "./ComponentForm";
 type Props = {};
 const uiSchema = {
   tasks: {
@@ -68,14 +67,9 @@ const schema = {
 };
 const Component = (props: Props) => {
   return (
-    <h1>
-      <Form
-        formData={data}
-        uiSchema={uiSchema}
-        schema={schema}
-        validator={validator}
-      />
-    </h1>
+    <div>
+      <ComponentForm data={data} uiSchema={uiSchema} schema={schema} />
+    </div>
   );
 };
 
