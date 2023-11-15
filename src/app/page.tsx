@@ -6,7 +6,7 @@ import { Theme as ChakraUITheme } from "@rjsf/chakra-ui";
 const Form = withTheme(ChakraUITheme);
 import validator from "@rjsf/validator-ajv8";
 import { RJSFSchema } from "@rjsf/utils";
-import { ModeToggle } from "./components/ModeToggle";
+import ModeToggle from "../components/ModeToggle";
 import { ChakraProvider } from "@chakra-ui/react";
 const data = {
   siteName: "Online Heritage Search",
@@ -35,19 +35,5 @@ const schema = {
   },
 };
 export default function Home() {
-  return (
-    <ChakraProvider>
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <ModeToggle />
-        <Form
-          formData={data}
-          schema={schema}
-          validator={validator}
-          onSubmit={({ formData }, e) => {
-            console.log(formData);
-          }}
-        />
-      </main>
-    </ChakraProvider>
-  );
+  return <div>Home page</div>;
 }
