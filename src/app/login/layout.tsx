@@ -7,7 +7,6 @@ type Props = {
 
 const Layout = async ({ children }: Props) => {
   const user = await getCurrentUser();
-  console.log(user);
   if (user) {
     redirect("/dashboard");
   }

@@ -10,15 +10,11 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { IconType } from "react-icons";
-import NextLink from "next/link";
-
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-} from "react-icons/fi";
+import { MdMuseum } from "react-icons/md";
+import { FiHome, FiArchive } from "react-icons/fi";
+import { TbHomeSearch, TbListDetails } from "react-icons/tb";
+import { useRouter } from "next/navigation";
+import { FaQuestionCircle } from "react-icons/fa";
 interface LinkItemProps {
   name: string;
   icon: IconType;
@@ -27,6 +23,7 @@ interface LinkItemProps {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   children: React.ReactNode;
+  href: string;
 }
 
 interface SidebarProps extends BoxProps {
@@ -37,20 +34,25 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, href: "/dashboard" },
   {
     name: "Union page",
-    icon: FiTrendingUp,
+    icon: TbHomeSearch,
     href: "/dashboard/component/union-home",
   },
   {
     name: "Archive page",
-    icon: FiCompass,
+    icon: FiArchive,
     href: "/dashboard/component/archive-home",
   },
   {
     name: "Artifact page",
-    icon: FiStar,
+    icon: MdMuseum,
     href: "/dashboard/component/artifact-home",
   },
-  { name: "FAQ", icon: FiStar, href: "/faq" },
+  {
+    name: "Detail page",
+    icon: TbListDetails,
+    href: "/dashboard/component/detail-page",
+  },
+  { name: "FAQ", icon: FaQuestionCircle, href: "/dashboard/component/faq" },
   // { name: "Settings", icon: FiSettings },
 ];
 export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
@@ -72,23 +74,23 @@ export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          <Link as={NextLink} href={link.href}>
-            {link.name}
-          </Link>
+        <NavItem href={link.href} key={link.name} icon={link.icon}>
+          {link.name}
         </NavItem>
       ))}
     </Box>
   );
 };
 
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
+  const router = useRouter();
+
   return (
     <Box
       as="a"
-      href="#"
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
+      onClick={() => router.push(href)}
     >
       <Flex
         align="center"
