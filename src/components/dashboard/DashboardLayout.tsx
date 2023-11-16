@@ -35,7 +35,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
       </Drawer>
       {/* mobilenav */}
       <Header onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box ml={{ base: 0, md: 60 }} bg="white" p="4">
         {children}
       </Box>
 
