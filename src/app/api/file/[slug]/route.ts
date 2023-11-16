@@ -13,11 +13,11 @@ export async function GET(
 
   try {
     const file = await fs.readFile(
-      `${BASE_DIRECTORY}/json/${fileName}.json`,
+      `${BASE_DIRECTORY}/json/${fileName}/data.json`,
       "utf-8"
     );
     const content = JSON.parse(file);
-    return NextResponse.json({ content });
+    return NextResponse.json(content);
   } catch (error) {
     return NextResponse.error();
   }

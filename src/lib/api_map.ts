@@ -6,19 +6,19 @@ type IAPI_MAP = {
 export const API_MAP: { [key: string]: IAPI_MAP } = {
   "union-home": {
     data: "/api/file/union-home",
-    schema: "",
+    schema: "/api/schema/union-home",
   },
-  "archive-home": {
-    data: "/api/file/union-home",
-    schema: "",
+  "description-home": {
+    data: "/api/file/description-home",
+    schema: "/api/schema/description-home",
   },
-  "artifact-home": {
-    data: "/api/file/union-home",
-    schema: "",
+  "collections-home": {
+    data: "/api/file/collections-home",
+    schema: "/api/schema/collections-home",
   },
   "detail-page": {
-    data: "/api/file/union-home",
-    schema: "",
+    data: "/api/file/detail-fields",
+    schema: "/api/schema/detail-fields",
   },
   faq: {
     data: "/api/file/union-home",

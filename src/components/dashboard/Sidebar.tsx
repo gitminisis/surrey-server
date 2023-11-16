@@ -41,12 +41,12 @@ const LinkItems: Array<LinkItemProps> = [
   {
     name: "Archive page",
     icon: FiArchive,
-    href: "/dashboard/component/archive-home",
+    href: "/dashboard/component/description-home",
   },
   {
     name: "Artifact page",
     icon: MdMuseum,
-    href: "/dashboard/component/artifact-home",
+    href: "/dashboard/component/collections-home",
   },
   {
     name: "Detail page",
