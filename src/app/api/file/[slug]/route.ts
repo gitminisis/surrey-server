@@ -28,18 +28,22 @@ export async function POST(
   { params }: { params: { slug: string } }
 ) {
   const fileName = params.slug;
+  console.log(fileName);
   if (fileName.trim() === "") {
     return NextResponse.error();
   }
-  const data = await request.formData();
-  const content = data.get("data");
+  const data = await request.json();
+  const content = JSON.stringify(data.data);
   try {
     const file = await fs.writeFile(
-      `${BASE_DIRECTORY}/json/${fileName}.json`,
+      `${BASE_DIRECTORY}/json/${fileName}/data.json`,
       content as string
     );
     return NextResponse.json({
+      success: 200,
+      title: "Site content update",
       message: "Data has been updated successfully.",
+      data: content,
     });
   } catch (error) {
     return NextResponse.error();

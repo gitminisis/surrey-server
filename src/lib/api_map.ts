@@ -21,11 +21,15 @@ export const API_MAP: { [key: string]: IAPI_MAP } = {
     schema: "/api/schema/detail-fields",
   },
   faq: {
-    data: "/api/file/union-home",
-    schema: "",
+    data: "/api/file/faq",
+    schema: "/api/schema/faq",
   },
   announcement: {
-    data: "/api/file/union-home",
-    schema: "",
+    data: "/api/file/announcement",
+    schema: "/api/schema/announcement",
+  },
+  "site-layout": {
+    data: "/api/file/site-layout",
+    schema: "/api/schema/site-layout",
   },
 };

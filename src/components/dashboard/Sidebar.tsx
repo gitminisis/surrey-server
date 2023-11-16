@@ -11,11 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { IconType } from "react-icons";
 import { MdMuseum } from "react-icons/md";
-import { FiHome, FiArchive } from "react-icons/fi";
+import { FiHome, FiArchive, FiLayout } from "react-icons/fi";
 import { TbHomeSearch, TbListDetails } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import { FaQuestionCircle } from "react-icons/fa";
 import { TfiAnnouncement } from "react-icons/tfi";
+
 interface LinkItemProps {
   name: string;
   icon: IconType;
@@ -58,6 +59,11 @@ const LinkItems: Array<LinkItemProps> = [
     name: "Announcement",
     icon: TfiAnnouncement,
     href: "/dashboard/component/announcement",
+  },
+  {
+    name: "Site layout",
+    icon: FiLayout,
+    href: "/dashboard/component/site-layout",
   },
   // { name: "Settings", icon: FiSettings },
 ];

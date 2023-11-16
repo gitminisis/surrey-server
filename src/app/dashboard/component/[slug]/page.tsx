@@ -3,79 +3,18 @@ import React, { useEffect, useState } from "react";
 
 import ComponentForm from "./ComponentForm";
 import { API_MAP } from "@/lib/api_map";
-type Props = {};
-const uiSchema = {
-  tasks: {
-    items: {
-      details: {
-        "ui:widget": "textarea",
-      },
-    },
-  },
-};
-const data = {
-  title: "My current tasks",
-  tasks: [
-    {
-      title: "My first task",
-      details:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      done: true,
-    },
-    {
-      title: "My second task",
-      details:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-      done: false,
-    },
-  ],
-};
-const schema = {
-  title: "A list of tasks",
-  type: "object",
-  required: ["title"],
-  properties: {
-    title: {
-      type: "string",
-      title: "Task list title",
-    },
-    tasks: {
-      type: "array",
-      title: "Tasks",
-      items: {
-        type: "object",
-        required: ["title"],
-        properties: {
-          title: {
-            type: "string",
-            title: "Title",
-            description: "A sample title",
-          },
-          details: {
-            type: "string",
-            title: "Task details",
-            description: "Enter the task details",
-          },
-          done: {
-            type: "boolean",
-            title: "Done?",
-            default: false,
-          },
-        },
-      },
-    },
-  },
-};
+import { useToast } from "@chakra-ui/react";
+
 const Component = ({ params }: { params: { slug: string } }) => {
+  const toast = useToast();
   const { slug } = params;
   const API_MAP_PATH = API_MAP[slug];
-  const [data, setData] = useState([]);
-  const [schema, setSchema] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dataPath = API_MAP_PATH.data;
+  const schemaPath = API_MAP_PATH.schema;
+  const [data, setData] = useState<any[]>([]);
+  const [schema, setSchema] = useState<any[]>([]);
 
   useEffect(() => {
-    const dataPath = API_MAP_PATH.data;
-    const schemaPath = API_MAP_PATH.schema;
     fetch(dataPath)
       .then((res) => res.json())
       .then((res) => setData(res));
@@ -85,13 +24,50 @@ const Component = ({ params }: { params: { slug: string } }) => {
         setSchema(res);
       });
   }, []);
-  console.log({ data, schema });
+
+  const updateData = (update: any, index: number) => {
+    const newData = [...data];
+    newData[index] = update;
+    let formData = new FormData();
+    formData.append("data", JSON.stringify(newData));
+    fetch(dataPath, {
+      method: "POST",
+      body: JSON.stringify({
+        data: newData,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          toast({
+            title: res.title,
+            description: res.message,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+          setData(JSON.parse(res.data));
+        }
+      });
+    setData(newData);
+  };
   return (
     <div>
       {data.length > 0 &&
         schema.length > 0 &&
         data.map((e, i) => (
-          <ComponentForm key={i} data={e} schema={schema[i]} />
+          <ComponentForm
+            key={i}
+            data={e}
+            schema={schema[i]}
+            submitHandler={(update) => {
+              updateData(update, i);
+            }}
+          />
         ))}
     </div>
   );
