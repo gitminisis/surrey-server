@@ -14,7 +14,7 @@ import { Header } from "./Header";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const bg = useColorModeValue("white", "gray.900");
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
@@ -32,10 +32,10 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
         <DrawerContent>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
-      </Drawer>
+    </Drawer>
       {/* mobilenav */}
       <Header onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} bg="white" p="4">
+      <Box ml={{ base: 0, md: 60 }} bg={bg} p="4">
         {children}
       </Box>
 
