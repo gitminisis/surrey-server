@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { IconType } from "react-icons";
 import { MdMuseum } from "react-icons/md";
-import { FiHome, FiArchive, FiLayout } from "react-icons/fi";
+import { FiHome, FiArchive, FiLayout, FiUpload } from "react-icons/fi";
 import { TbHomeSearch, TbListDetails } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import { FaQuestionCircle } from "react-icons/fa";
@@ -61,9 +61,14 @@ const LinkItems: Array<LinkItemProps> = [
     href: "/dashboard/component/announcement",
   },
   {
-    name: "Site layout",
+    name: "Site setting",
     icon: FiLayout,
     href: "/dashboard/component/site-layout",
+  },
+  {
+    name: "Easyload",
+    icon: FiUpload,
+    href: "/dashboard/easyload",
   },
   // { name: "Settings", icon: FiSettings },
 ];

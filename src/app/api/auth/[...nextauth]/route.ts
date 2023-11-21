@@ -12,10 +12,14 @@ export const authOptions = {
     async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.name = user.username;
+        token.tenant_id = process.env.TENANT_ID;
+        token.tenant_password = process.env.TENANT_PASSWORD;
       }
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
+      session.tenant_id = token.tenant_id;
+      session.tenant_password = token.tenant_password;
       return session;
     },
   },
@@ -41,6 +45,8 @@ export const authOptions = {
           if (userCount && parseInt(userCount) === 1) {
             return {
               username: credentials.username,
+              tenantId: process.env.TENANT_ID,
+              tenantPwd: process.env.TENANT_PASSWORD,
             };
           }
           return null;
