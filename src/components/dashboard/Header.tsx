@@ -19,14 +19,13 @@ import {
 } from "@chakra-ui/react";
 import { FiMenu, FiChevronDown } from "react-icons/fi";
 import ModeToggle from "@/components/ModeToggle";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 
 export const Header = ({ onOpen, ...rest }: MobileProps) => {
   const { data: session, status } = useSession();
-  console.log(session);
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -78,7 +77,7 @@ export const Header = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">{session && session.user.name}</Text>
+                  <Text fontSize="sm">{session && session.user?.name}</Text>
                   <Text fontSize="xs" color="gray.600">
                     Admin
                   </Text>
@@ -93,10 +92,9 @@ export const Header = ({ onOpen, ...rest }: MobileProps) => {
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
               <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
+
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={() => signOut()}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

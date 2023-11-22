@@ -13,7 +13,6 @@ export async function GET(
   }
   try {
     const filePath = path.normalize(`${BASE_DIRECTORY}/json/${fileName}/data.json`)
-    console.log(filePath)
 
     const file = await fs.readFile(
       filePath,
@@ -31,7 +30,6 @@ export async function POST(
   { params }: { params: { slug: string } }
 ) {
   const fileName = params.slug;
-  console.log(fileName);
   if (fileName.trim() === "") {
     return NextResponse.error();
   }
