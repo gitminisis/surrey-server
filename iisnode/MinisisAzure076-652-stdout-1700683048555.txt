@@ -1,4 +1,0 @@
-> Ready on http://localhost:\\.\pipe\2d5f9d14-0dfc-4a30-b54b-a5615e5d1a62
-undefined
-F:\wwwroot\src\templates\json\site-layout\data.json
-F:\wwwroot\src\templates\json\union-home\data.json
