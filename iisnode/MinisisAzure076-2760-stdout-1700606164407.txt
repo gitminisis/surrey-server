@@ -1,0 +1,20 @@
+> Ready on http://localhost:\\.\pipe\b059d35f-a39a-433d-8b2d-7311f4324392
+undefined
+undefined
+F:\wwwroot\src\templates\json\union-home\data.json
+F:\wwwroot\src\templates\json\site-layout\data.json
+F:\wwwroot\src\templates\json\announcement\data.json
+announcement
+announcement
+undefined
+F:\wwwroot\src\templates\json\announcement\data.json
+undefined
+F:\wwwroot\src\templates\json\announcement\data.json
+undefined
+undefined
+F:\wwwroot\src\templates\json\announcement\data.json
+undefined
+F:\wwwroot\src\templates\json\announcement\data.json
+undefined
+undefined
+undefined

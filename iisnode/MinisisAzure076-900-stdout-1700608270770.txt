@@ -1,0 +1,4 @@
+> Ready on http://localhost:\\.\pipe\56e08717-8b64-4865-bb7d-7ba29eec19bc
+undefined
+undefined
+F:\wwwroot\src\templates\json\description-home\data.json

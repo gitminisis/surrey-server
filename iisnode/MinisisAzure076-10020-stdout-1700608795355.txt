@@ -1,0 +1,6 @@
+> Ready on http://localhost:\\.\pipe\874a2596-775d-4ebf-9a85-a98dbdd4c775
+undefined
+F:\wwwroot\src\templates\json\description-home\data.json
+undefined
+F:\wwwroot\src\templates\json\union-home\data.json
+F:\wwwroot\src\templates\json\description-home\data.json
