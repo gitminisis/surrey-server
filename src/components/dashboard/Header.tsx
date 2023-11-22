@@ -26,6 +26,7 @@ interface MobileProps extends FlexProps {
 
 export const Header = ({ onOpen, ...rest }: MobileProps) => {
   const { data: session, status } = useSession();
+  console.log(session);
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -87,10 +88,7 @@ export const Header = ({ onOpen, ...rest }: MobileProps) => {
                 </Box>
               </HStack>
             </MenuButton>
-            <MenuList
-              bg={useColorModeValue("white", "gray.900")}
-              borderColor={useColorModeValue("gray.200", "gray.700")}
-            >
+            <MenuList>
               <MenuItem>Profile</MenuItem>
 
               <MenuDivider />

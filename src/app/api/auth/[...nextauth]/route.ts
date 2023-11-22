@@ -1,7 +1,16 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 const BASE_OPAC_URL = process.env.BASE_OPAC_URL;
 import { parse } from "node-html-parser";
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: {
+      tenant_id: string;
+      tenant_password: string;
+    } & DefaultSession["user"];
+  }
+}
+
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
@@ -18,8 +27,11 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
-      session.tenant_id = token.tenant_id;
-      session.tenant_password = token.tenant_password;
+      if (token) {
+        session.user.tenant_id = token.tenant_id;
+        session.user.tenant_password = token.tenant_password;
+      }
+
       return session;
     },
   },
@@ -45,8 +57,6 @@ export const authOptions = {
           if (userCount && parseInt(userCount) === 1) {
             return {
               username: credentials.username,
-              tenantId: process.env.TENANT_ID,
-              tenantPwd: process.env.TENANT_PASSWORD,
             };
           }
           return null;

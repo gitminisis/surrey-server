@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { Tooltip } from "@chakra-ui/react";
 import {
@@ -9,9 +9,23 @@ import {
   FiMonitor,
   FiVideo,
 } from "react-icons/fi";
-type Props = {};
+import Upload from "./Upload";
+import { Authorize } from "@/lib/upload";
+type TCredential = {
+  tenant_id: string;
+  tenant_pwd: string;
+};
+type Props = {
+  credentials: TCredential;
+};
 
-const PageContainer = (props: Props) => {
+const PageContainer = ({ credentials }: Props) => {
+  useEffect(() => {
+    const { tenant_id, tenant_pwd } = credentials;
+    Authorize(tenant_id, tenant_pwd).then((res) => {
+      console.log(res);
+    });
+  }, []);
   return (
     <div>
       <Tabs>
@@ -38,7 +52,7 @@ const PageContainer = (props: Props) => {
             <p>one!</p>
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <Upload instantUpload={false} />
           </TabPanel>
           <TabPanel>
             <p>three!</p>
