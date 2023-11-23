@@ -52,7 +52,7 @@ const PageContainer = ({ credentials }: Props) => {
             <p>one!</p>
           </TabPanel>
           <TabPanel>
-            <Upload instantUpload={false} />
+            <Upload instantUpload={true} />
           </TabPanel>
           <TabPanel>
             <p>three!</p>

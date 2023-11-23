@@ -6,15 +6,15 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 const EASYLOAD_BASE_API =
-  process.env.EASYLOAD_BASE_API || "http://localhost:3000";
+  process.env.EASYLOAD_BASE_API || "https://easyload-dev.azurewebsites.net/";
 export const urls = {
   TOKEN: "/api/auth/token",
   VERSION: "/api/app/version",
-  ASSETS: "api/Assets/",
-  ASSETS_UPLOAD_CHUNK: "api/Assets/UploadChunk",
-  ASSETS_UPLOAD_COMMIT: "api/Assets/Commit",
-  ASSETS_DELETE: "api/Assets/Remove",
-  ASSETS_SEARCH: "api/Assets/Search",
+  ASSETS: "/api/Assets/",
+  ASSETS_UPLOAD_CHUNK: "/api/Assets/UploadChunk",
+  ASSETS_UPLOAD_COMMIT: "/api/Assets/Commit",
+  ASSETS_DELETE: "/api/Assets/Remove",
+  ASSETS_SEARCH: "/api/Assets/Search",
 };
 
 export const auth = {
@@ -141,7 +141,10 @@ export const Authorize = async (
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Credentials": true,
-          host: "https://easyload-dev.azurewebsites.net/login",
+          "Access-Control-Allow-Origin": "*",
+
+          "Access-Control-Allow-Headers":
+            "Origin, Content-Type, X-Auth-Token, Authorization, Accept,charset,boundary,Content-Length",
         },
         timeout: 6000,
       }
@@ -188,13 +191,17 @@ export const UploadAssetChunk = async (
 
     const arrayBuffer = await fileChunk.arrayBuffer();
 
-    const response = await axios.post(urls.ASSETS_UPLOAD_CHUNK, arrayBuffer, {
-      headers,
-      signal: abortController.signal,
-      onUploadProgress: (e: AxiosProgressEvent) => {
-        progress(true, e.loaded + totalLoaded, fileSize);
-      },
-    });
+    const response = await axios.post(
+      EASYLOAD_BASE_API + urls.ASSETS_UPLOAD_CHUNK,
+      arrayBuffer,
+      {
+        headers,
+        signal: abortController.signal,
+        onUploadProgress: (e: AxiosProgressEvent) => {
+          progress(true, e.loaded + totalLoaded, fileSize);
+        },
+      }
+    );
 
     if (response.status === 201) {
       return { success: true, data: response.data } as RequestResult;
