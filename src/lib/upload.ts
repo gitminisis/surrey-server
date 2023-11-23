@@ -66,7 +66,7 @@ import { ProgressServerConfigFunction } from "filepond";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.put["Content-Type"] = "application/json";
 
-setupInterceptorsTo(axios);
+// setupInterceptorsTo(axios);
 
 interface RequestResult {
   success: boolean;
@@ -129,33 +129,17 @@ const catchError = (error: unknown): RequestResult => {
   return result;
 };
 
-export const Authorize = async (
-  id: string,
-  password: string
-): Promise<RequestResult> => {
+export const Authorize = async (): Promise<RequestResult> => {
   try {
-    const response = await axios.post(
-      EASYLOAD_BASE_API + urls.TOKEN,
-      { id, password },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true,
-          "Access-Control-Allow-Origin": "*",
-
-          "Access-Control-Allow-Headers":
-            "Origin, Content-Type, X-Auth-Token, Authorization, Accept,charset,boundary,Content-Length",
-        },
-        timeout: 6000,
-      }
-    );
+    const response = await axios.get("/api/token");
+    
     if (response.status === 200) {
       save(auth.AUTH_TOKEN, response.data.Token);
       save(auth.TENANT, { ...response.data, token: undefined });
       save(auth.TENANT_ID, response.data.Id);
       save(auth.USER, "OPAC user");
     }
-    return { success: true } as RequestResult;
+    return { success: true, data: response.data } as RequestResult;
   } catch (error) {
     return catchError(error);
   }

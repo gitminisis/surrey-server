@@ -11,20 +11,12 @@ import {
 } from "react-icons/fi";
 import Upload from "./Upload";
 import { Authorize } from "@/lib/upload";
-type TCredential = {
-  tenant_id: string;
-  tenant_pwd: string;
-};
-type Props = {
-  credentials: TCredential;
-};
 
-const PageContainer = ({ credentials }: Props) => {
+type Props = {};
+
+const PageContainer = ({}: Props) => {
   useEffect(() => {
-    const { tenant_id, tenant_pwd } = credentials;
-    Authorize(tenant_id, tenant_pwd).then((res) => {
-      console.log(res);
-    });
+    Authorize().then((res) => {});
   }, []);
   return (
     <div>
