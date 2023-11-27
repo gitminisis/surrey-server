@@ -44,7 +44,7 @@ const PageContainer = ({}: Props) => {
             <p>one!</p>
           </TabPanel>
           <TabPanel>
-            <Upload instantUpload={true} />
+            <Upload />
           </TabPanel>
           <TabPanel>
             <p>three!</p>
