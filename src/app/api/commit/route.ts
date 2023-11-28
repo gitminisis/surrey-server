@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
       MimeType: req.get("MimeType")?.toString(),
       User: req.get("User")?.toString(),
       Tenant: req.get("Tenant")?.toString(),
-      "Content-Type": "application/offset+octet-stream",
       Authorization: `Bearer ${req.get("Token")?.toString().trim()}`,
     };
 
@@ -20,15 +19,20 @@ export async function POST(request: NextRequest) {
     debugger;
     const upload = await axios.post(
       EASYLOAD_BASE_API + urls.ASSETS_UPLOAD_COMMIT,
-      req.get("Chunkid"),
+      req.get("Chunkid") || [],
       {
         headers,
       }
     );
 
-    if (upload.status === 200) {
+    if (upload.status === 201) {
       return NextResponse.json({ success: true, data: upload.data });
     }
+
+    return NextResponse.json({
+      success: false,
+      message: "Commit request failed",
+    });
   } catch (e) {
     return NextResponse.json({ error: e });
   }
