@@ -156,20 +156,6 @@ export const UploadAssetChunk = async (
   abortController: AbortController
 ): Promise<RequestResult> => {
   try {
-    const data = {
-      Blobid: fileId,
-      Blobname: fileName,
-      Blockid: chunkId,
-      Tenant: sessionStorage.getItem(auth.TENANT_ID) || "",
-      "Content-Type": "application/offset+octet-stream",
-    };
-
-    const bodyFormData = new FormData();
-    bodyFormData.append("Blobid", data.Blobid);
-    bodyFormData.append("Blobname", data.Blobname);
-    bodyFormData.append("Tenant", data.Tenant);
-    bodyFormData.append("Blockid", data.Blockid);
-
     const res = await axios.postForm("/api/upload", {
       Blobid: fileId,
       Blobname: fileName,
@@ -183,7 +169,10 @@ export const UploadAssetChunk = async (
       return { success: true, data: res.data } as RequestResult;
     }
 
-    return { success: false } as RequestResult;
+    return {
+      success: false,
+      message: "Error uploading chunk",
+    } as RequestResult;
   } catch (error) {
     if (axios.isCancel(error)) {
       return { success: false, message: "Cancelled" } as RequestResult;
@@ -198,18 +187,14 @@ export const CommitAssetUpload = async (
   fileType: string,
   chunksIds: string[]
 ): Promise<RequestResult> => {
-  debugger;
   try {
-    const headers = {
+    const response = await axios.postForm("/api/commit", {
       Blobid: fileId,
       Blobname: fileName,
+      Tenant: sessionStorage.getItem(auth.TENANT_ID) || "",
+      Token: `${sessionStorage.getItem(auth.AUTH_TOKEN)}`,
       MimeType: fileType,
       User: sessionStorage.getItem(auth.USER),
-      Tenant: sessionStorage.getItem(auth.TENANT_ID),
-    };
-
-    const response = await axios.postForm("/api/commit", chunksIds, {
-      headers,
     });
 
     return {
