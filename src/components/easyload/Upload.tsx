@@ -100,20 +100,20 @@ const Upload = ({
               }
             }
 
-            // if (blockIds.length === chunks.length) {
-            //   const commitResult = await CommitAssetUpload(
-            //     metadata.fileId,
-            //     file.name,
-            //     file.type,
-            //     blockIds
-            //   );
-            //   if (commitResult.success) load(commitResult.data as string);
-            //   else
-            //     error(
-            //       commitResult.message ||
-            //         `Error commiting upload of ${file.name}`
-            //     );
-            // }
+            if (blockIds.length === chunks.length) {
+              const commitResult = await CommitAssetUpload(
+                metadata.fileId,
+                file.name,
+                file.type,
+                blockIds
+              );
+              if (commitResult.success) load(commitResult.data as string);
+              else
+                error(
+                  commitResult.message ||
+                    `Error commiting upload of ${file.name}`
+                );
+            }
 
             return {
               options,

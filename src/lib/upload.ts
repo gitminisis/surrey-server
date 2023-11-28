@@ -156,7 +156,7 @@ export const UploadAssetChunk = async (
   abortController: AbortController
 ): Promise<RequestResult> => {
   try {
-    const headers = {
+    const data = {
       Blobid: fileId,
       Blobname: fileName,
       Blockid: chunkId,
@@ -165,10 +165,10 @@ export const UploadAssetChunk = async (
     };
 
     const bodyFormData = new FormData();
-    bodyFormData.append("Blobid", headers.Blobid);
-    bodyFormData.append("Blobname", headers.Blobname);
-    bodyFormData.append("Tenant", headers.Tenant);
-    bodyFormData.append("Blockid", headers.Blockid);
+    bodyFormData.append("Blobid", data.Blobid);
+    bodyFormData.append("Blobname", data.Blobname);
+    bodyFormData.append("Tenant", data.Tenant);
+    bodyFormData.append("Blockid", data.Blockid);
 
     const res = await axios.postForm("/api/upload", {
       Blobid: fileId,
@@ -179,7 +179,7 @@ export const UploadAssetChunk = async (
       Token: `${sessionStorage.getItem(auth.AUTH_TOKEN)}`,
     });
 
-    if (res.status === 201) {
+    if (res.status === 200) {
       return { success: true, data: res.data } as RequestResult;
     }
 
@@ -198,6 +198,7 @@ export const CommitAssetUpload = async (
   fileType: string,
   chunksIds: string[]
 ): Promise<RequestResult> => {
+  debugger;
   try {
     const headers = {
       Blobid: fileId,
@@ -207,13 +208,9 @@ export const CommitAssetUpload = async (
       Tenant: sessionStorage.getItem(auth.TENANT_ID),
     };
 
-    const response = await axios.post(
-      EASYLOAD_BASE_API + urls.ASSETS_UPLOAD_COMMIT,
-      chunksIds,
-      {
-        headers,
-      }
-    );
+    const response = await axios.postForm("/api/commit", chunksIds, {
+      headers,
+    });
 
     return {
       success: response.status === 201,
