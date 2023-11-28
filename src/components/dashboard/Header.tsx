@@ -26,7 +26,6 @@ interface MobileProps extends FlexProps {
 
 export const Header = ({ onOpen, ...rest }: MobileProps) => {
   const { data: session, status } = useSession();
-  console.log(session);
   return (
     <Flex
       ml={{ base: 0, md: 60 }}

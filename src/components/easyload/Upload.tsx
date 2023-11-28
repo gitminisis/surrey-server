@@ -73,33 +73,32 @@ const Upload = ({
             options
           ) => {
             const controller = new AbortController();
-
             const chunks = sliceChunks(file, options.chunkSize);
             const blockIds = new Array<string>();
-            console.log(chunks);
-            // for (let index = 0; index < chunks.length; index++) {
-            //   const fileChunk = chunks[index];
-            //   const uploadResult = await UploadAssetChunk(
-            //     fileChunk,
-            //     index + 1,
-            //     metadata.fileId,
-            //     file.name,
-            //     index * options.chunkSize,
-            //     file.size,
-            //     progress,
-            //     controller
-            //   );
-            //   if (!uploadResult.success) {
-            //     error(
-            //       uploadResult.message ||
-            //         `Error uploading chunk ${index + 1} of ${file.name}`
-            //     );
-            //   } else {
-            //     const blockId = uploadResult.data as string;
-            //     blockIds.push(blockId);
-            //     transfer(blockId);
-            //   }
-            // }
+            for (let index = 0; index < chunks.length; index++) {
+              const fileChunk = chunks[index];
+              const uploadResult = await UploadAssetChunk(
+                fileChunk,
+                `${index + 1}`,
+                metadata.fileId,
+                file.name,
+                index * options.chunkSize,
+                file.size,
+                progress,
+                controller
+              );
+              debugger;
+              if (!uploadResult.success) {
+                error(
+                  uploadResult.message ||
+                    `Error uploading chunk ${index + 1} of ${file.name}`
+                );
+              } else {
+                const blockId = uploadResult.data as string;
+                blockIds.push(blockId);
+                transfer(blockId);
+              }
+            }
 
             // if (blockIds.length === chunks.length) {
             //   const commitResult = await CommitAssetUpload(
@@ -116,13 +115,13 @@ const Upload = ({
             //     );
             // }
 
-            // return {
-            //   options,
-            //   abort: () => {
-            //     controller.abort();
-            //     abort();
-            //   },
-            // };
+            return {
+              options,
+              abort: () => {
+                controller.abort();
+                abort();
+              },
+            };
           },
         }}
         ref={filePondRef}

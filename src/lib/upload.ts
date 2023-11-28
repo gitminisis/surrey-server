@@ -5,18 +5,17 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-const EASYLOAD_BASE_API =
-  process.env.EASYLOAD_BASE_API || "https://easyload-dev.azurewebsites.net/";
+export const EASYLOAD_BASE_API =
+  process.env.EASYLOAD_BASE_API || "https://easyload-dev.azurewebsites.net";
 export const urls = {
   TOKEN: "/api/auth/token",
   VERSION: "/api/app/version",
   ASSETS: "/api/Assets/",
-  ASSETS_UPLOAD_CHUNK: "/api/Assets/UploadChunk",
+  ASSETS_UPLOAD_CHUNK: "api/Assets/UploadChunk",
   ASSETS_UPLOAD_COMMIT: "/api/Assets/Commit",
   ASSETS_DELETE: "/api/Assets/Remove",
   ASSETS_SEARCH: "/api/Assets/Search",
 };
-
 export const auth = {
   AUTH_TOKEN: "easy_load_authToken",
   TENANT: "easy_load_tenant",
@@ -55,11 +54,12 @@ export function setupInterceptorsTo(
   axiosInstance.interceptors.response.use(onResponse, onResponseError);
   return axiosInstance;
 }
-export const save = (key: string, item: unknown) =>
+export const save = (key: string, item: unknown) => {
   sessionStorage.setItem(
     key,
     typeof item === "string" ? item : JSON.stringify(item)
   );
+};
 
 import { ProgressServerConfigFunction } from "filepond";
 
@@ -131,24 +131,15 @@ const catchError = (error: unknown): RequestResult => {
 
 export const Authorize = async (): Promise<RequestResult> => {
   try {
-    const response = await axios.get("/api/token");
-    
-    if (response.status === 200) {
-      save(auth.AUTH_TOKEN, response.data.Token);
-      save(auth.TENANT, { ...response.data, token: undefined });
-      save(auth.TENANT_ID, response.data.Id);
+    const req = await fetch("/api/token");
+    const response = await req.json();
+    if (req.status === 200) {
+      save(auth.AUTH_TOKEN, response.Token);
+      save(auth.TENANT, { ...response, token: undefined });
+      save(auth.TENANT_ID, response.Id);
       save(auth.USER, "OPAC user");
     }
-    return { success: true, data: response.data } as RequestResult;
-  } catch (error) {
-    return catchError(error);
-  }
-};
-
-export const GetVersion = async (): Promise<RequestResult> => {
-  try {
-    const response = await axios.get(EASYLOAD_BASE_API + urls.VERSION);
-    return { data: response.data, success: true } as RequestResult;
+    return { success: true, data: response } as RequestResult;
   } catch (error) {
     return catchError(error);
   }
@@ -156,7 +147,7 @@ export const GetVersion = async (): Promise<RequestResult> => {
 
 export const UploadAssetChunk = async (
   fileChunk: Blob,
-  chunkId: number,
+  chunkId: string,
   fileId: string,
   fileName: string,
   totalLoaded: number,
@@ -166,32 +157,33 @@ export const UploadAssetChunk = async (
 ): Promise<RequestResult> => {
   try {
     const headers = {
-      BlobId: fileId,
-      BlobName: fileName,
-      BlockId: chunkId,
-      Tenant: sessionStorage.getItem(auth.TENANT_ID),
+      Blobid: fileId,
+      Blobname: fileName,
+      Blockid: chunkId,
+      Tenant: sessionStorage.getItem(auth.TENANT_ID) || "",
       "Content-Type": "application/offset+octet-stream",
     };
 
-    const arrayBuffer = await fileChunk.arrayBuffer();
+    const bodyFormData = new FormData();
+    bodyFormData.append("Blobid", headers.Blobid);
+    bodyFormData.append("Blobname", headers.Blobname);
+    bodyFormData.append("Tenant", headers.Tenant);
+    bodyFormData.append("Blockid", headers.Blockid);
 
-    const response = await axios.post(
-      EASYLOAD_BASE_API + urls.ASSETS_UPLOAD_CHUNK,
-      arrayBuffer,
-      {
-        headers,
-        signal: abortController.signal,
-        onUploadProgress: (e: AxiosProgressEvent) => {
-          progress(true, e.loaded + totalLoaded, fileSize);
-        },
-      }
-    );
+    const res = await axios.postForm("/api/upload", {
+      Blobid: fileId,
+      Blobname: fileName,
+      Blockid: chunkId,
+      Tenant: sessionStorage.getItem(auth.TENANT_ID) || "",
+      File: fileChunk,
+      Token: `${sessionStorage.getItem(auth.AUTH_TOKEN)}`,
+    });
 
-    if (response.status === 201) {
-      return { success: true, data: response.data } as RequestResult;
+    if (res.status === 201) {
+      return { success: true, data: res.data } as RequestResult;
     }
 
-    return { success: false, message: response.data } as RequestResult;
+    return { success: false } as RequestResult;
   } catch (error) {
     if (axios.isCancel(error)) {
       return { success: false, message: "Cancelled" } as RequestResult;
@@ -208,8 +200,8 @@ export const CommitAssetUpload = async (
 ): Promise<RequestResult> => {
   try {
     const headers = {
-      BlobId: fileId,
-      BlobName: fileName,
+      Blobid: fileId,
+      Blobname: fileName,
       MimeType: fileType,
       User: sessionStorage.getItem(auth.USER),
       Tenant: sessionStorage.getItem(auth.TENANT_ID),
@@ -238,7 +230,7 @@ export const CommitAssetUpload = async (
 export const DeleteAsset = async (fileId: string): Promise<RequestResult> => {
   try {
     const headers = {
-      BlobId: fileId,
+      Blobid: fileId,
       User: sessionStorage.getItem(auth.USER),
       Tenant: sessionStorage.getItem(auth.TENANT_ID),
     };
