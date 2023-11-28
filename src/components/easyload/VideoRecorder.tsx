@@ -10,8 +10,8 @@ import VideoLogo from "/video.png";
 import Webcam from "react-webcam";
 import LoadingOverlay from "react-loading-overlay-ts";
 import moment from "moment";
-import { Box, CardActionArea, Stack, CardContent, Card } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+// import { Box, CardActionArea, Stack, CardContent, Card } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import {
   setModeAction,
   setModeActions,
@@ -22,7 +22,8 @@ import {
   setDevicesState,
   deviceLoaded,
   MediaDevice,
-} from "../app/easyLoadBoxSlice";
+} from "@/store/easyLoadBoxSlice";
+import { Card, CardHeader, Box, CardBody } from "@chakra-ui/react";
 
 interface WebcamCaptureProps {
   visible?: boolean | null | undefined;
@@ -33,12 +34,11 @@ const actions = [
   { action: "listDevices", title: "List devices", icon: "list" },
 ];
 
-const WebcamCapture = ({
+const VideoRecorder = ({
   visible = true,
 }: WebcamCaptureProps): ReactElement => {
   const dispatch = useAppDispatch();
   const action = useAppSelector((state) => state.easyLoadBox.currentAction);
-  const mode = useAppSelector((state) => state.easyLoadBox.currentMode);
   const selectedCam = useAppSelector(
     (state) => state.easyLoadBox.deviceSelected
   );
@@ -49,19 +49,9 @@ const WebcamCapture = ({
   const mediaFiles = useAppSelector((state) => state.easyLoadBox.mediaFiles);
 
   const webCamRef = useRef<Webcam>(null);
-
-  useEffect(
-    () => () => {
-      dispatch(setModeActions([]));
-    },
-    []
-  );
-
   useEffect(() => {
-    if (mode === "photo") {
-      dispatch(setModeActions(actions));
-    }
-  }, [mode]);
+    dispatch(setModeActions(actions));
+  }, []);
 
   useEffect(() => {
     switch (action) {
@@ -127,101 +117,58 @@ const WebcamCapture = ({
   };
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        display: visible ? "flex" : "none",
-        justifyContent: "center",
-        backgroundColor: "background.paper",
-      }}
-    >
-      <Stack
-        alignItems="center"
-        direction="column"
-        sx={{ px: 1, width: "100%", overflow: "auto" }}
-      >
-        {devices
-          .filter((d) =>
-            selectedCam ? d.deviceId === selectedCam : d.deviceId
-          )
-          .map((device, key) => (
-            <Fragment key={`media-files-${key}`}>
-              <Card
-                sx={{
-                  width: "100%",
-                  height: "20%",
-                  borderRadius: 0.4,
-                  my: 0.5,
-                }}
-                onClick={() => handleCamSelect(device)}
-              >
-                <CardActionArea
-                  sx={{
-                    display: "flex",
-                    height: "100%",
-                    width: "100%",
-                    justifyContent: "start",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: "35%",
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <LoadingOverlay active={isLoading(device.deviceId)} spinner>
-                      <Webcam
-                        ref={selectedCam ? webCamRef : null}
-                        audio={false}
-                        videoConstraints={{ deviceId: device.deviceId }}
-                        onUserMedia={() =>
-                          dispatch(deviceLoaded(device.deviceId))
-                        }
-                      />
-                    </LoadingOverlay>
-                  </Box>
-                  <CardContent
-                    sx={{
-                      display: "flex",
-                      flexGrow: 1,
-                      justifyContent: "center",
-                    }}
-                  >
-                    {device.label || `Device ${key + 1}`}
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-              {selectedCam && (
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "80%",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "flex-start",
-                    alignContent: "flex-start",
-                    flexWrap: "wrap",
-                    overflow: "auto",
-                  }}
-                >
-                  {mediaFiles.map((mf, mfkey) => (
-                    <Box
-                      component="img"
-                      sx={{ width: "19%", m: "0.5%", cursor: "pointer" }}
-                      key={`media-files-${mfkey}`}
-                      src={mf.type === "blob" ? VideoLogo : mf.src}
-                      onClick={() => dispatch(removeMediaFile(mf))}
+    <>
+      {devices
+        .filter((d) => (selectedCam ? d.deviceId === selectedCam : d.deviceId))
+        .map((device, key) => (
+          <Fragment key={`media-files-${key}`}>
+            <Card onClick={() => handleCamSelect(device)}>
+              <CardHeader>
+                <Box>
+                  <LoadingOverlay active={isLoading(device.deviceId)} spinner>
+                    <Webcam
+                      ref={selectedCam ? webCamRef : null}
+                      audio={false}
+                      videoConstraints={{ deviceId: device.deviceId }}
+                      onUserMedia={() =>
+                        dispatch(deviceLoaded(device.deviceId))
+                      }
                     />
-                  ))}
+                  </LoadingOverlay>
                 </Box>
-              )}
-            </Fragment>
-          ))}
-      </Stack>
-    </Box>
+                <CardBody>{device.label || `Device ${key + 1}`}</CardBody>
+              </CardHeader>
+            </Card>
+            {selectedCam && (
+              <div
+                style={{
+                  width: "100%",
+                  height: "80%",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  alignContent: "flex-start",
+                  flexWrap: "wrap",
+                  overflow: "auto",
+                }}
+              >
+                {mediaFiles.map((mf, mfkey) => (
+                  <image
+                    // component="img"
+                    alt="mfkey"
+                    style={{ width: "19%", margin: "0.5%", cursor: "pointer" }}
+                    key={`media-files-${mfkey}`}
+                    src={mf.type === "blob" ? "/video.png" : mf.src}
+                    onClick={() => dispatch(removeMediaFile(mf))}
+                  />
+                ))}
+              </div>
+            )}
+          </Fragment>
+        ))}
+    </>
   );
 };
 
-export default WebcamCapture;
+export default VideoRecorder;
