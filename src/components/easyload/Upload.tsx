@@ -144,7 +144,6 @@ const Upload = ({
           }
         }}
         onupdatefiles={(items) => setFiles(items.map((f) => f.file))}
-        // onremovefile={(_, file) => dispatch(removeMediaFileById(file.id))}
       />
     </div>
   );
