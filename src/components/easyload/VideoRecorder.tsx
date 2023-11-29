@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useCallback,
   Fragment,
+  useState,
 } from "react";
 import VideoLogo from "/video.png";
 import Webcam from "react-webcam";
@@ -23,7 +24,7 @@ import {
   deviceLoaded,
   MediaDevice,
 } from "@/store/easyLoadBoxSlice";
-import { Card, CardHeader, Box, CardBody } from "@chakra-ui/react";
+import { Card, CardHeader, Box, CardBody, Button } from "@chakra-ui/react";
 
 interface WebcamCaptureProps {
   visible?: boolean | null | undefined;
@@ -39,6 +40,7 @@ const VideoRecorder = ({
 }: WebcamCaptureProps): ReactElement => {
   const dispatch = useAppDispatch();
   const action = useAppSelector((state) => state.easyLoadBox.currentAction);
+  const mode = useAppSelector((state) => state.easyLoadBox.currentMode);
   const selectedCam = useAppSelector(
     (state) => state.easyLoadBox.deviceSelected
   );
@@ -47,17 +49,26 @@ const VideoRecorder = ({
     (state) => state.easyLoadBox.devicesState
   );
   const mediaFiles = useAppSelector((state) => state.easyLoadBox.mediaFiles);
-
   const webCamRef = useRef<Webcam>(null);
+  useEffect(
+    () => () => {
+      dispatch(setModeActions([]));
+    },
+    []
+  );
+
   useEffect(() => {
-    dispatch(setModeActions(actions));
-  }, []);
+    if (mode === "photo") {
+      dispatch(setModeActions(actions));
+    }
+  }, [mode]);
 
   useEffect(() => {
     switch (action) {
       case "takePicture":
         {
           const src = webCamRef.current?.getScreenshot();
+
           const date = moment().format("LLL");
           const camName = devices.find(
             (d) => d.deviceId === selectedCam
@@ -99,7 +110,7 @@ const VideoRecorder = ({
     dispatch(
       setDevicesState([
         ...videoInputs.map((i) => ({ id: i.deviceId, loading: true })),
-        { id: "selected", loading: true },
+        // { id: "selected", loading: true },
       ])
     );
   }, []);
@@ -116,8 +127,25 @@ const VideoRecorder = ({
     dispatch(webCamSelected(device.deviceId));
   };
 
+
+
   return (
     <>
+      {/* <Button onClick={() => stop()}>Stop</Button> */}
+      <Button
+        onClick={() => {
+          dispatch(setModeAction("listDevices"));
+        }}
+      >
+        List Devices
+      </Button>
+      <Button
+        onClick={() => {
+          dispatch(setModeAction("takePicture"));
+        }}
+      >
+        Take Screenshot
+      </Button>
       {devices
         .filter((d) => (selectedCam ? d.deviceId === selectedCam : d.deviceId))
         .map((device, key) => (
@@ -127,6 +155,7 @@ const VideoRecorder = ({
                 <Box>
                   <LoadingOverlay active={isLoading(device.deviceId)} spinner>
                     <Webcam
+                      imageSmoothing
                       ref={selectedCam ? webCamRef : null}
                       audio={false}
                       videoConstraints={{ deviceId: device.deviceId }}
@@ -154,14 +183,24 @@ const VideoRecorder = ({
                 }}
               >
                 {mediaFiles.map((mf, mfkey) => (
-                  <image
-                    // component="img"
-                    alt="mfkey"
-                    style={{ width: "19%", margin: "0.5%", cursor: "pointer" }}
-                    key={`media-files-${mfkey}`}
-                    src={mf.type === "blob" ? "/video.png" : mf.src}
-                    onClick={() => dispatch(removeMediaFile(mf))}
-                  />
+                  <div
+                    key={mfkey}
+                    style={{
+                      border: "2px solid red",
+                      width: "100px",
+                      height: "100px",
+                    }}
+                  >
+                    <img
+                      style={{ width: 100, height: 100 }}
+                      // component="img"
+                      alt="mfkey"
+                      // style={{ width: "19%", margin: "0.5%", cursor: "pointer" }}
+                      key={`media-files-${mfkey}`}
+                      src={mf.src}
+                      onClick={() => dispatch(removeMediaFile(mf))}
+                    />
+                  </div>
                 ))}
               </div>
             )}

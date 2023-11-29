@@ -1,13 +1,20 @@
-import React, { ReactElement, useEffect, useRef, useState } from "react";
-import { FilePondInitialFile } from "filepond";
-import { FilePond, registerPlugin } from "react-filepond";
-import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+'use client';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import { FilePondInitialFile } from 'filepond';
+import { FilePond, registerPlugin } from 'react-filepond';
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 
-import "filepond/dist/filepond.min.css";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import { DeleteAsset, UploadAssetChunk } from "@/lib/upload";
-import { CommitAssetUpload } from "../../lib/upload";
+import 'filepond/dist/filepond.min.css';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import { DeleteAsset, UploadAssetChunk } from '@/lib/upload';
+import { CommitAssetUpload } from '../../lib/upload';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import {
+  MediaFile,
+  removeMediaFileById,
+  updateMediaFile,
+} from '@/store/easyLoadBoxSlice';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 interface FilesUploaderProps {
@@ -28,8 +35,42 @@ const Upload = ({
   const [files, setFiles] = useState<
     Array<FilePondInitialFile | Blob | string>
   >([]);
-
+  const dispatch = useAppDispatch();
+  const newMediaFile = useAppSelector(
+    (state) => state.easyLoadBox.newMediaFile
+  );
+  const mediaFileRemoved = useAppSelector(
+    (state) => state.easyLoadBox.mediaFileRemoved
+  );
   const filePondRef = useRef<FilePond>(null);
+  const addMediaFile = (fileInfo: MediaFile | null | undefined) => {
+    if (!fileInfo?.src || !filePondRef?.current) return;
+    fetch(fileInfo.src).then(async (response) => {
+      const blob = await response.blob();
+      const file = new File([blob], fileInfo.title, {
+        type: fileInfo.mimetype,
+        lastModified: new Date().getTime(),
+      });
+      if (filePondRef.current) {
+        filePondRef.current
+          .addFile(file, { metadata: { fileId: fileInfo.id } })
+          .then((f) =>
+            dispatch(updateMediaFile({ ...fileInfo, uploadId: f.id }))
+          )
+          .catch((error) => console.log(error));
+      }
+    });
+  };
+
+  useEffect(() => {
+    addMediaFile(newMediaFile);
+  }, [newMediaFile]);
+
+  useEffect(() => {
+    if (mediaFileRemoved) {
+      filePondRef.current?.removeFile(mediaFileRemoved.uploadId);
+    }
+  }, [mediaFileRemoved]);
 
   const sliceChunks = (
     file: Blob & { readonly lastModified: number; readonly name: string },
@@ -140,10 +181,11 @@ const Upload = ({
           if (error) return;
           const metadata = file.getMetadata();
           if (!metadata.fileId) {
-            file.setMetadata("fileId", crypto.randomUUID());
+            file.setMetadata('fileId', crypto.randomUUID());
           }
         }}
         onupdatefiles={(items) => setFiles(items.map((f) => f.file))}
+        onremovefile={(_, file) => dispatch(removeMediaFileById(file.id))}
       />
     </div>
   );

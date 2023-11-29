@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import appReducer from "./appSlice";
 import easyLoadBoxReducer from "./easyLoadBoxSlice";
 
 export const store = configureStore({
   reducer: {
-    app: appReducer,
     easyLoadBox: easyLoadBoxReducer,
   },
 });

@@ -80,6 +80,7 @@ export const easyLoadBoxSlice = createSlice({
       state.currentAction = action.payload;
     },
     addMediaFile: (state, action: PayloadAction<MediaFile>) => {
+      debugger;
       state.newMediaFile = action.payload;
       state.mediaFiles = [...state.mediaFiles, action.payload];
     },
