@@ -1,12 +1,12 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import moment from 'moment';
 import { useReactMediaRecorder } from 'react-media-recorder';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import {
   addMediaFile,
   setModeActions,
   setStatus,
-} from '../app/easyLoadBoxSlice';
+} from '@/store/easyLoadBoxSlice';
 
 interface MediaRecorderProps {
   visible?: boolean | null | undefined;
