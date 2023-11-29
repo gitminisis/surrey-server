@@ -19,6 +19,7 @@ import {
   setMode,
   setModeAction,
 } from '@/store/easyLoadBoxSlice';
+import MediaRecorder from './MediaRecorder';
 
 type Props = {};
 
@@ -35,9 +36,6 @@ const PageContainer = ({}: Props) => {
   const resetState = () => {
     dispatch(setModeAction(''));
     dispatch(setMode(''));
-    console.log(' resetttttinnnngggg ');
-    // dispatch(setDevicesList([]));
-    // dispatch(setDevicesState([]));
   };
   return (
     <div>
@@ -77,6 +75,20 @@ const PageContainer = ({}: Props) => {
             <Upload />
           </TabPanel>
           <TabPanel>{mode === 'photo' && <VideoRecorder />}</TabPanel>
+          <TabPanel>
+            {mode === 'video' && (
+              <MediaRecorder
+                video={true}
+                audio={true}
+                askPermissionOnMount={true}
+              />
+            )}
+          </TabPanel>
+          <TabPanel>
+            {mode === 'screen' && (
+              <MediaRecorder screen={true} askPermissionOnMount={true} />
+            )}
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </div>
