@@ -1,6 +1,10 @@
+'use client';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import moment from 'moment';
-import { useReactMediaRecorder } from 'react-media-recorder';
+import {
+  useReactMediaRecorder,
+  ReactMediaRecorder,
+} from 'react-media-recorder';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import {
   addMediaFile,
@@ -35,20 +39,15 @@ const MediaRecorder = ({
     useReactMediaRecorder({ screen, video, audio, askPermissionOnMount });
 
   const videoRef = useRef<HTMLVideoElement>(null);
-
+  console.count('media recorder call');
   useEffect(
     () => () => {
       dispatch(setModeActions([]));
       dispatch(setStatus(''));
+      dispatch(setModeActions(actions));
     },
     []
   );
-
-  useEffect(() => {
-    if (mode === 'video' || mode === 'screen') {
-      dispatch(setModeActions(actions));
-    }
-  }, [mode]);
 
   useEffect(() => {
     if (videoRef.current && preview) {
@@ -83,22 +82,22 @@ const MediaRecorder = ({
     }
   }, [mediaBlobUrl]);
 
-  useEffect(() => {
-    switch (action) {
-      case 'startRecording': {
-        startRecording();
-        setPreview(true);
-        break;
-      }
-      case 'stopRecording': {
-        stopRecording();
-        setPreview(false);
-        break;
-      }
-      default:
-        break;
-    }
-  }, [action]);
+  // useEffect(() => {
+  //   switch (action) {
+  //     case 'startRecording': {
+  //       startRecording();
+  //       setPreview(true);
+  //       break;
+  //     }
+  //     case 'stopRecording': {
+  //       stopRecording();
+  //       setPreview(false);
+  //       break;
+  //     }
+  //     default:
+  //       break;
+  //   }
+  // }, [action]);
 
   useEffect(() => {
     if (status !== 'recording') dispatch(setStatus('preview'));

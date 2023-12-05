@@ -20,7 +20,6 @@ import {
   setModeAction,
 } from '@/store/easyLoadBoxSlice';
 import MediaRecorder from './MediaRecorder';
-
 type Props = {};
 
 const PageContainer = ({}: Props) => {
@@ -43,8 +42,11 @@ const PageContainer = ({}: Props) => {
         onChange={(index) => {
           if (index === 2) {
             dispatch(setMode('photo'));
+          } else if (index === 3) {
+            dispatch(setMode('video'));
+          } else if (index === 4) {
+            dispatch(setMode('screen'));
           } else {
-            dispatch(setModeAction(''));
             dispatch(setMode('search'));
           }
         }}

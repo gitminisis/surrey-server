@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     axios.defaults.headers.put["Content-Type"] = "application/json";
 
-    debugger;
+  
     const upload = await axios.post(
       EASYLOAD_BASE_API + urls.ASSETS_UPLOAD_COMMIT,
       req.get("Chunkid") || [],
