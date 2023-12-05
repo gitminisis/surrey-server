@@ -1,23 +1,23 @@
-import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth, { DefaultSession } from "next-auth";
+import CredentialsProvider from 'next-auth/providers/credentials';
+import NextAuth, { DefaultSession } from 'next-auth';
 const BASE_OPAC_URL = process.env.BASE_OPAC_URL;
-import { parse } from "node-html-parser";
-declare module "next-auth" {
+import { parse } from 'node-html-parser';
+declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       tenant_id: string;
       tenant_password: string;
-    } & DefaultSession["user"];
+    } & DefaultSession['user'];
   }
 }
 
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
     maxAge: 1 * 60 * 60,
   },
   callbacks: {
@@ -40,23 +40,25 @@ export const authOptions = {
   },
   providers: [
     CredentialsProvider({
-      id: "minisis",
-      name: "MINISIS Inc.",
+      id: 'minisis',
+      name: 'MINISIS Inc.',
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "Username" },
-        password: { label: "Password", type: "password" },
+        username: { label: 'Username', type: 'text', placeholder: 'Username' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials) throw new Error("Credentials not found");
+        if (!credentials) throw new Error('Credentials not found');
         const url = `${BASE_OPAC_URL}/scripts/mwimain.dll/144/USER_PROFILE/WEB_CHECK_USER?SESSIONSEARCH&NOMSG=[SURREY_OPAC]new_account.xml&EXP=USER_NAME "${credentials?.username}" and USER_PASSWORD "${credentials?.password}"`;
+        debugger;
         const res = await fetch(url);
         const content = await res.text();
+        console.log({ content, url });
         if (!res.ok || !content) return null;
         // If no error and we have content data, return it
         if (res.ok && content) {
           // return content;
           const userCount =
-            parse(content).querySelector("#user-count")?.innerText;
+            parse(content).querySelector('#user-count')?.innerText;
           if (userCount && parseInt(userCount) === 1) {
             return {
               username: credentials.username,
